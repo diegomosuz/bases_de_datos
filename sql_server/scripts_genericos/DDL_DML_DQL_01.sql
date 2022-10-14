@@ -1,0 +1,140 @@
+-- LISTAR TODAS LAS BASES DE DATOS
+SELECT * FROM sys.databases;
+
+-- CREAR UNA BASE DE DATOS
+CREATE DATABASE ClaseDDL;
+
+-- USAR UNA BASE DE DATOS
+USE ClaseDDL;
+
+-- Listar las tablas de la base de datos en uso
+SELECT * FROM sys.tables;
+
+-- CREAR UNA TABLA CON UNA PRIMARY KEY SIMPLE
+CREATE TABLE Tabla1(
+	id		INT PRIMARY KEY,
+	descr	VARCHAR(50) NOT NULL
+);
+
+-- CREAR UNA TABLA CON UNA PRIMARY KEY COMPUESTA
+CREATE TABLE Tabla2(
+	id1		INT,
+	id2		INT,
+	descr	VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id1, id2)
+);
+
+-- CREAR UNA TABLA CON UNA FOREIGN KEY
+CREATE TABLE Tabla3(
+	id1		INT PRIMARY KEY,
+	fk_id2	INT,
+	FOREIGN KEY (fk_id2) REFERENCES Tabla1(id)
+);
+
+-- INSERTAR DATOS EN UNA TABLA
+INSERT INTO Tabla1 VALUES (10, 'Descripción 1');
+INSERT INTO Tabla1(descr, id) VALUES ('Descripción 2', 20);
+INSERT INTO Tabla3 VALUES (100, 20);
+
+CREATE TABLE Tabla4(
+    id		INT PRIMARY KEY,
+	descr	VARCHAR(50)
+)
+
+INSERT INTO Tabla4 VALUES (10, 'Descripción 1');
+INSERT INTO Tabla4 VALUES (20, 'Descripción 2');
+
+SELECT * FROM Tabla4;
+
+DELETE Tabla4 WHERE id = 10;
+
+INSERT INTO Tabla4 VALUES (10, 'Descripción 1');
+
+DELETE Tabla4;
+
+DROP TABLE Tabla4;
+
+CREATE TABLE Tabla4(
+    id		INT PRIMARY KEY,
+	descr	VARCHAR(50)
+);
+
+INSERT INTO Tabla4 VALUES (10, 'Descripción 1');
+INSERT INTO Tabla4 VALUES (20, 'Descripción 2');
+
+SELECT * FROM Tabla4;
+
+UPDATE Tabla4 SET descr = 'Desc modificada' WHERE id = 20;
+
+ALTER TABLE Tabla4 ADD edad VARCHAR(10);
+
+ALTER TABLE Tabla4
+  ALTER COLUMN edad INT;
+
+ALTER TABLE Tabla4
+  DROP COLUMN edad;
+
+-- RENOMBRAR COLUMNA
+sp_rename 'Tabla4.descr', 'descrip', 'COLUMN';
+
+-- RENOMBRAR TABLA
+sp_rename 'Tabla4', 'Tabla4r';
+
+SELECT * FROM Tabla4r;
+
+sp_rename 'Tabla4r', 'Tabla4';
+
+ALTER TABLE Tabla4 DROP CONSTRAINT PK__Tabla4__3213E83FDF2ABDA9;
+
+ALTER TABLE Tabla4 ADD CONSTRAINT PK_Tabla4 PRIMARY KEY (id);
+
+ALTER TABLE Tabla4 ADD CONSTRAINT FK_Tabla1 FOREIGN KEY (id) REFERENCES Tabla1(id);
+
+CREATE TABLE Tabla5(
+	x	INT IDENTITY(1,1),
+	Y	INT
+);
+
+INSERT INTO Tabla5 VALUES (10), (20);
+
+SELECT * FROM Tabla5;
+
+DELETE Tabla5;
+
+INSERT INTO Tabla5 VALUES (30), (40);
+
+-- RESET IDENTITY
+DBCC CHECKIDENT ('Tabla5', RESEED, 0);
+
+ALTER TABLE TABLA5 ADD CONSTRAINT unique_y UNIQUE(y);
+
+SELECT *
+FROM Information_Schema.Columns
+WHERE TABLE_NAME = 'Tabla5'
+
+CREATE TABLE Tabla6(
+	x	INT IDENTITY(1,1),
+	Y	INT CHECK (y > 0)
+);
+
+INSERT INTO Tabla6 VALUES (10), (-20);
+
+CREATE TABLE Tabla7(
+	x	INT IDENTITY(1,1) PRIMARY KEY,
+	y	INT
+);
+
+CREATE TABLE Tabla8(
+	z	INT IDENTITY(1,1) PRIMARY KEY,
+	w	INT,
+	FOREIGN KEY (w) REFERENCES Tabla7(x) ON DELETE CASCADE
+);
+
+INSERT INTO Tabla7 VALUES (10), (20);
+INSERT INTO Tabla8 VALUES (1), (2),(1), (2), (1) ;
+
+SELECT * FROM Tabla7;
+
+SELECT * FROM Tabla8;
+
+DELETE Tabla7 WHERE x = 1;
