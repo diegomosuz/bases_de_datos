@@ -21,9 +21,9 @@ INNER JOIN Room R ON B.roomNo = R.roomNo  INNER JOIN Guest G ON G.guestNo = B.gu
 WHERE B.hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel')
 
 -- ¿Cuál es el ingreso total correspondiente a las reservas realizadas en el Grosvenor Hotel hoy?
-SELECT cant * price AS ingresoGrosvenor FROM
+SELECT SUM(cant * price) AS ingresoGrosvenor FROM
 (SELECT roomNo, COUNT(hotelNo) AS cant FROM Booking WHERE hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel') 
-		AND dateFrom = GETDATE()
+		AND dateFrom = CONVERT(date,GETDATE(),121)
 GROUP BY roomNo) AS Hab INNER JOIN Room ON Hab.roomNo = Room.roomNo
 
 -- Generar un listado con las habitaciones actualmente no ocupadas en el Grosvenor Hotel.

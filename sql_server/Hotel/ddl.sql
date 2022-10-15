@@ -37,3 +37,6 @@ CREATE TABLE Booking(
 	FOREIGN KEY (roomNo, hotelNo)	REFERENCES Room(roomNo, hotelNo)
 );
 GO
+ALTER TABLE Booking
+  ADD CONSTRAINT CK_booking_fecha
+  CHECK (dateFrom <= dateTo);
