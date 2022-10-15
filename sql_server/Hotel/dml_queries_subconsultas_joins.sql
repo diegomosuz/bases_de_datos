@@ -37,16 +37,3 @@ SELECT
 	(SELECT SUM(price) AS total FROM Booking INNER JOIN Room ON Booking.roomNo = Room.roomNo 
 		WHERE Booking.hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel'))
 AS perdidaIngresos;
-
-
---Revisar
-
---SELECT roomNo, COUNT(roomNo) AS cantHab FROM Room WHERE hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel') GROUP BY roomNo
-
---SELECT roomNo, COUNT(roomNo) AS cantHabOc FROM Booking WHERE hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel') GROUP BY roomNo
--- Mirar division
-
---SELECT SUM(price) AS total FROM Room WHERE hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel')
-
---SELECT * FROM Room WHERE hotelNo = (SELECT hotelNo FROM Hotel WHERE hotelName = 'Grosvenor Hotel')
-
